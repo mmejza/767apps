@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MBA Message Frequency & Awareness Lab</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #dbe4f0;
+      --blue: #1d4ed8;
+      --blue2: #2563eb;
+      --teal: #0f766e;
+      --amber: #b45309;
+      --red: #b91c1c;
+      --soft: #eef4ff;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #edf4ff 0%, var(--bg) 100%);
+    }
+    .wrap { max-width: 1220px; margin: 0 auto; padding: 22px; }
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 2.1rem; }
+    .hero p { margin: 0; max-width: 900px; color: #dbeafe; line-height: 1.6; font-size: 1.03rem; }
+    .grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .card h2, .card h3 { margin: 0 0 10px; }
+    .sub { color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .pill {
+      display: inline-block;
+      background: #e0eaff;
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .scenario {
+      background: #f8fbff;
+      border: 1px solid #d8e7fb;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .scenario strong { color: var(--blue); }
+    .controls { display: grid; gap: 10px; }
+    .row { display: grid; grid-template-columns: 1.5fr 1fr 80px; gap: 10px; align-items: center; }
+    label { font-weight: 700; font-size: 0.95rem; }
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: white;
+    }
+    .small { color: var(--muted); font-size: 0.87rem; }
+    .dist-grid { display: grid; gap: 10px; margin-top: 12px; }
+    .dist-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 90px;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      background: #fbfdff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+    }
+    .bar-wrap { background: #e5eefb; border-radius: 999px; height: 14px; overflow: hidden; }
+    .bar { height: 14px; background: linear-gradient(90deg, #60a5fa, #2563eb); }
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+    }
+    .kpi .label { color: var(--muted); font-size: 0.88rem; margin-bottom: 6px; }
+    .kpi .value { font-size: 1.7rem; font-weight: 700; }
+    .formula {
+      background: var(--soft);
+      border: 1px solid #bfd5ff;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+    .question {
+      border-left: 5px solid #f59e0b;
+      background: #fffbeb;
+      padding: 14px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 12px; }
+    .choice {
+      border: 1px solid #dbe4f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      background: white;
+      transition: 0.15s ease;
+    }
+    .choice:hover { border-color: #93c5fd; background: #f8fbff; }
+    .choice.selected { border-color: var(--blue); background: #eef4ff; }
+    .choice.correct { border-color: #86efac; background: #f0fdf4; }
+    .choice.wrong { border-color: #fecaca; background: #fef2f2; }
+    .feedback {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      display: none;
+      line-height: 1.6;
+    }
+    .feedback.show { display: block; }
+    .feedback.good { background: #f0fdf4; border: 1px solid #86efac; }
+    .feedback.bad { background: #fef2f2; border: 1px solid #fecaca; }
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .primary { background: var(--blue); color: white; }
+    .secondary { background: #e5e7eb; color: #111827; }
+    .insight {
+      padding: 14px;
+      border-radius: 14px;
+      background: #111827;
+      color: white;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+    .scorebox {
+      background: linear-gradient(135deg, #eff6ff, #f8fbff);
+      border: 1px solid #c7dcff;
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .scorebox .score { font-size: 2rem; font-weight: 700; color: var(--blue); }
+    .mini { font-size: 0.88rem; color: var(--muted); }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 12px; }
+      .kpis { grid-template-columns: 1fr; }
+      .dist-row { grid-template-columns: 90px 1fr 70px; }
+      .hero h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="pill" style="background:rgba(255,255,255,0.16); color:#fff;">MBA-Level Decision Lab</div>
+      <h1>Message Frequency & Awareness Strategy Lab</h1>
+      <p>
+        Build and critique a media plan by distinguishing <strong>messages sent</strong> from <strong>message frequency actually received</strong>. The exercise uses the logic from the slides on message frequency, awareness, and the idea that nearly all campaigns send more messages than the target audience receives.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="pill">Scenario</div>
+          <h2>PulseBoost Launch Campaign</h2>
+          <div class="scenario">
+            <div class="sub">
+              <strong>Role:</strong> You are advising a brand team launching PulseBoost, a functional beverage aimed at graduate students and young professionals.
+              The team is proud that it can send a large number of impressions, but the VP of Marketing worries that the audience will not actually experience enough effective frequency to build awareness.
+            </div>
+            <div class="sub" style="margin-bottom:0;">
+              Your task is to analyze the exposure distribution, estimate actual average frequency, and choose the best managerial response.
+            </div>
+          </div>
+
+          <h3>Set the campaign assumptions</h3>
+          <div class="controls">
+            <div class="row">
+              <label for="sent">Messages sent to market</label>
+              <input id="sent" type="number" min="1" max="20" step="1" value="8" />
+              <div class="small">1–20</div>
+            </div>
+            <div class="row">
+              <label for="reach">Reach (% of target exposed at least once)</label>
+              <input id="reach" type="number" min="1" max="100" step="1" value="90" />
+              <div class="small">1–100%</div>
+            </div>
+            <div class="row">
+              <label for="awareThreshold">Effective frequency threshold for awareness</label>
+              <select id="awareThreshold">
+                <option value="3">3 exposures</option>
+                <option value="4" selected>4 exposures</option>
+                <option value="5">5 exposures</option>
+              </select>
+              <div class="small">managerial assumption</div>
+            </div>
+          </div>
+
+          <div class="formula" id="summaryFormula"></div>
+        </div>
+
+        <div class="card">
+          <div class="pill">Exposure Distribution</div>
+          <h2>Audience receipt is uneven</h2>
+          <div class="sub">
+            Adjust the percent of the target audience that received each number of exposures. These percentages should sum to the reach value above, because only reached consumers receive 1 or more exposures.
+          </div>
+
+          <div id="distribution" class="dist-grid"></div>
+          <div class="btns">
+            <button class="secondary" id="presetA">Preset A: Broad but shallow</button>
+            <button class="secondary" id="presetB">Preset B: Balanced</button>
+            <button class="secondary" id="presetC">Preset C: Concentrated</button>
+          </div>
+          <div class="mini" style="margin-top:10px;">Tip: A campaign can send many messages yet still create weak average frequency if exposures are thinly spread.</div>
+        </div>
+
+        <div class="card">
+          <div class="pill">Decision Challenge</div>
+          <h2>What should management do next?</h2>
+          <div class="question" id="questionText"></div>
+          <div id="choices" class="choices"></div>
+          <div id="feedback" class="feedback"></div>
+          <div class="btns">
+            <button class="primary" id="checkBtn">Check answer</button>
+            <button class="secondary" id="newCaseBtn">New scenario</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="pill">Dashboard</div>
+          <h2>Campaign diagnostics</h2>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Average message frequency</div>
+              <div class="value" id="avgFreq">0.00</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Audience at/above threshold</div>
+              <div class="value" id="awarePct">0.0%</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Unreached audience</div>
+              <div class="value" id="unreached">0.0%</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Sent vs. received gap</div>
+              <div class="value" id="gap">0.00</div>
+            </div>
+          </div>
+          <div class="insight" id="insightBox"></div>
+        </div>
+
+        <div class="card">
+          <div class="pill">MBA Interpretation</div>
+          <h3>How to reason about the output</h3>
+          <ul style="margin:0 0 0 18px; line-height:1.7; color:#334155;">
+            <li>High <strong>messages sent</strong> do not prove high <strong>frequency received</strong>.</li>
+            <li>Awareness often depends on a meaningful share of the audience crossing an effective-frequency threshold.</li>
+            <li>A manager may need to trade off <strong>reach</strong> against <strong>frequency</strong>, not simply maximize gross impressions.</li>
+            <li>The best next action depends on whether the problem is <strong>distribution</strong>, <strong>creative quality</strong>, or <strong>insufficient weight</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="card scorebox">
+          <div class="pill">Instructor View</div>
+          <h3 style="margin-bottom:8px;">Performance</h3>
+          <div class="score" id="score">0 / 3</div>
+          <div class="mini">1 point for a valid distribution, 1 point for choosing the best strategic response, 1 point for keeping the diagnosis logically consistent.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const distributionEl = document.getElementById('distribution');
+    const sentEl = document.getElementById('sent');
+    const reachEl = document.getElementById('reach');
+    const thresholdEl = document.getElementById('awareThreshold');
+    const avgFreqEl = document.getElementById('avgFreq');
+    const awarePctEl = document.getElementById('awarePct');
+    const unreachedEl = document.getElementById('unreached');
+    const gapEl = document.getElementById('gap');
+    const summaryFormulaEl = document.getElementById('summaryFormula');
+    const insightBoxEl = document.getElementById('insightBox');
+    const questionTextEl = document.getElementById('questionText');
+    const choicesEl = document.getElementById('choices');
+    const feedbackEl = document.getElementById('feedback');
+    const scoreEl = document.getElementById('score');
+
+    let selectedChoice = null;
+    let answerKey = null;
+    let score = 0;
+
+    const defaultDist = {1:10,2:10,3:10,4:15,5:20,6:15,7:5,8:5};
+    let currentPromptType = 'broad';
+
+    function createDistributionRows() {
+      distributionEl.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const row = document.createElement('div');
+        row.className = 'dist-row';
+        row.innerHTML = `
+          <div><strong>${i} exposure${i>1?'s':''}</strong></div>
+          <div class="bar-wrap"><div class="bar" id="bar-${i}" style="width:${defaultDist[i]}%"></div></div>
+          <input type="number" id="dist-${i}" min="0" max="100" step="1" value="${defaultDist[i]}" />
+        `;
+        distributionEl.appendChild(row);
+      }
+      attachDistListeners();
+    }
+
+    function attachDistListeners() {
+      for (let i = 1; i <= 8; i++) {
+        const input = document.getElementById(`dist-${i}`);
+        input.addEventListener('input', updateAll);
+      }
+    }
+
+    function getDistribution() {
+      const dist = {};
+      for (let i = 1; i <= 8; i++) dist[i] = Number(document.getElementById(`dist-${i}`).value || 0);
+      return dist;
+    }
+
+    function sumDist(dist) {
+      return Object.values(dist).reduce((a, b) => a + b, 0);
+    }
+
+    function avgFrequency(dist) {
+      return Object.entries(dist).reduce((acc, [k, v]) => acc + Number(k) * v, 0) / 100;
+    }
+
+    function thresholdPct(dist, threshold) {
+      let t = 0;
+      for (let i = threshold; i <= 8; i++) t += dist[i] || 0;
+      return t;
+    }
+
+    function updateBars(dist) {
+      for (let i = 1; i <= 8; i++) {
+        document.getElementById(`bar-${i}`).style.width = `${Math.max(0, Math.min(100, dist[i]))}%`;
+      }
+    }
+
+    function buildInsight(avg, thresholdShare, unreached, sent, isValid) {
+      if (!isValid) {
+        return 'The distribution is not yet valid. The percentages across 1–8 exposures must sum to the campaign reach. That itself is a useful managerial lesson: an exposure distribution is a constrained resource allocation, not a set of independent guesses.';
+      }
+      const gap = sent - avg;
+      if (thresholdShare < 25) {
+        return `The campaign is under-delivering effective frequency. Although ${sent.toFixed(1)} messages are being sent, the average received frequency is only ${avg.toFixed(2)}, and only ${thresholdShare.toFixed(1)}% of the target crosses the awareness threshold. Management should probably improve frequency concentration before claiming awareness success.`;
+      }
+      if (unreached > 25) {
+        return `A sizable unreached audience remains (${unreached.toFixed(1)}%). The campaign may need broader coverage, but widening reach too aggressively could further dilute frequency. The tradeoff should be discussed explicitly.`;
+      }
+      if (gap > 4) {
+        return `There is a large sent-vs.-received gap (${gap.toFixed(2)}). This means gross message volume overstates what the audience actually experiences. Management should stop treating “messages sent” as equivalent to “frequency achieved.”`;
+      }
+      return `This campaign is reasonably balanced. The audience distribution supports awareness better than a shallow plan would, but the team still needs to justify whether the current level of weight is enough relative to competitors and category clutter.`;
+    }
+
+    function updateSummary(avg, thresholdShare, unreached, sent) {
+      summaryFormulaEl.innerHTML = `
+        Messages sent = <strong>${sent.toFixed(0)}</strong> &nbsp; | &nbsp;
+        Average frequency received = <strong>${avg.toFixed(2)}</strong> &nbsp; | &nbsp;
+        Audience at or above threshold = <strong>${thresholdShare.toFixed(1)}%</strong> &nbsp; | &nbsp;
+        Unreached = <strong>${unreached.toFixed(1)}%</strong>
+      `;
+    }
+
+    function setScoreDisplay() {
+      scoreEl.textContent = `${score} / 3`;
+    }
+
+    function generateQuestion(avg, thresholdShare, unreached, sent, valid) {
+      const threshold = Number(thresholdEl.value);
+      let prompt = '';
+      let options = [];
+      let correct = 0;
+
+      if (!valid) {
+        prompt = 'Which diagnosis is most defensible right now?';
+        options = [
+          'The team already has enough evidence to conclude awareness will be strong.',
+          'The exposure distribution must first be corrected so that its percentages match campaign reach.',
+          'Average frequency should be assumed equal to messages sent.',
+          'The best response is to cut media weight immediately.'
+        ];
+        correct = 1;
+        currentPromptType = 'invalid';
+      } else if (thresholdShare < 25 && avg < threshold) {
+        prompt = `The campaign sends ${sent} messages, but relatively few customers reach ${threshold}+ exposures. What is the best managerial response?`;
+        options = [
+          'Claim success because gross impressions are high.',
+          'Redistribute weight to improve effective frequency among priority segments before expanding reach further.',
+          'Reduce repetition because repeated exposure usually hurts awareness.',
+          'Ignore the distribution and focus only on total messages sent.'
+        ];
+        correct = 1;
+        currentPromptType = 'thin';
+      } else if (unreached > 25 && thresholdShare >= 25) {
+        prompt = 'A decent portion of reached consumers crosses the threshold, but a large share of the market is unreached. What is the strongest interpretation?';
+        options = [
+          'The team should discuss a reach-frequency tradeoff rather than celebrate one metric in isolation.',
+          'The campaign has no strategic issue because some people are receiving enough frequency.',
+          'The distribution proves that messages sent equal messages received.',
+          'The only reasonable response is to cut spending.'
+        ];
+        correct = 0;
+        currentPromptType = 'reachTradeoff';
+      } else {
+        prompt = 'The current diagnostics look fairly balanced. What is the most MBA-level next step?';
+        options = [
+          'Stop analysis here because message frequency alone proves market success.',
+          'Compare the current reach-frequency pattern against competitive clutter, objective, and budget efficiency before scaling.',
+          'Assume awareness automatically converts to purchase.',
+          'Replace all media with a single channel because concentration always dominates diversification.'
+        ];
+        correct = 1;
+        currentPromptType = 'balanced';
+      }
+
+      answerKey = correct;
+      selectedChoice = null;
+      questionTextEl.textContent = prompt;
+      choicesEl.innerHTML = '';
+      feedbackEl.className = 'feedback';
+      feedbackEl.innerHTML = '';
+
+      options.forEach((text, idx) => {
+        const div = document.createElement('div');
+        div.className = 'choice';
+        div.textContent = text;
+        div.addEventListener('click', () => {
+          document.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+          div.classList.add('selected');
+          selectedChoice = idx;
+        });
+        choicesEl.appendChild(div);
+      });
+    }
+
+    function updateAll() {
+      const dist = getDistribution();
+      const sent = Number(sentEl.value || 0);
+      const reach = Number(reachEl.value || 0);
+      const threshold = Number(thresholdEl.value);
+      const distSum = sumDist(dist);
+      const valid = Math.abs(distSum - reach) < 0.001;
+      const avg = avgFrequency(dist);
+      const thresholdShare = thresholdPct(dist, threshold);
+      const unreached = Math.max(0, 100 - reach);
+      const gap = sent - avg;
+
+      updateBars(dist);
+      avgFreqEl.textContent = avg.toFixed(2);
+      awarePctEl.textContent = thresholdShare.toFixed(1) + '%';
+      unreachedEl.textContent = unreached.toFixed(1) + '%';
+      gapEl.textContent = gap.toFixed(2);
+      insightBoxEl.textContent = buildInsight(avg, thresholdShare, unreached, sent, valid);
+      updateSummary(avg, thresholdShare, unreached, sent);
+      generateQuestion(avg, thresholdShare, unreached, sent, valid);
+    }
+
+    function checkAnswer() {
+      const dist = getDistribution();
+      const sent = Number(sentEl.value || 0);
+      const reach = Number(reachEl.value || 0);
+      const distSum = sumDist(dist);
+      const valid = Math.abs(distSum - reach) < 0.001;
+      const avg = avgFrequency(dist);
+      const threshold = Number(thresholdEl.value);
+      const thresholdShare = thresholdPct(dist, threshold);
+      let localScore = 0;
+      if (valid) localScore += 1;
+      if (selectedChoice === answerKey) localScore += 1;
+
+      let consistency = false;
+      if (currentPromptType === 'invalid' && !valid) consistency = true;
+      if (currentPromptType === 'thin' && valid && thresholdShare < 25 && avg < threshold) consistency = true;
+      if (currentPromptType === 'reachTradeoff' && valid && thresholdShare >= 25 && (100 - reach) > 25) consistency = true;
+      if (currentPromptType === 'balanced' && valid && !(thresholdShare < 25 && avg < threshold) && !((100 - reach) > 25 && thresholdShare >= 25)) consistency = true;
+      if (consistency) localScore += 1;
+      score = localScore;
+      setScoreDisplay();
+
+      const choiceEls = document.querySelectorAll('.choice');
+      choiceEls.forEach((c, i) => {
+        c.classList.remove('correct', 'wrong');
+        if (i === answerKey) c.classList.add('correct');
+        if (selectedChoice === i && i !== answerKey) c.classList.add('wrong');
+      });
+
+      if (selectedChoice === null) {
+        feedbackEl.className = 'feedback show bad';
+        feedbackEl.innerHTML = 'Select an answer first. Then evaluate whether your diagnosis matches the actual distribution logic.';
+        return;
+      }
+
+      if (selectedChoice === answerKey) {
+        feedbackEl.className = 'feedback show good';
+        feedbackEl.innerHTML = `<strong>Good call.</strong> Your answer matches the best managerial response. Notice that the key issue is not merely how many messages were sent (${sent}), but whether the audience distribution actually produces sufficient frequency and awareness.`;
+      } else {
+        feedbackEl.className = 'feedback show bad';
+        feedbackEl.innerHTML = `<strong>Not quite.</strong> The stronger diagnosis depends on the gap between messages sent and frequency received, plus how many consumers actually cross the awareness threshold. In this case, average frequency is ${avg.toFixed(2)} and ${thresholdShare.toFixed(1)}% of the target reaches ${threshold}+ exposures.`;
+      }
+    }
+
+    function applyPreset(name) {
+      let preset;
+      if (name === 'A') preset = {1:20,2:18,3:16,4:12,5:10,6:6,7:4,8:4};
+      if (name === 'B') preset = {1:10,2:10,3:10,4:15,5:20,6:15,7:5,8:5};
+      if (name === 'C') preset = {1:4,2:6,3:8,4:12,5:18,6:16,7:14,8:12};
+      const targetReach = Number(reachEl.value || 0);
+      const baseSum = Object.values(preset).reduce((a,b)=>a+b,0);
+      for (let i = 1; i <= 8; i++) {
+        const scaled = Math.round((preset[i] / baseSum) * targetReach);
+        document.getElementById(`dist-${i}`).value = scaled;
+      }
+      // correction for rounding
+      let dist = getDistribution();
+      let diff = targetReach - sumDist(dist);
+      let idx = 8;
+      while (diff !== 0) {
+        const el = document.getElementById(`dist-${idx}`);
+        let val = Number(el.value || 0);
+        if (diff > 0) { el.value = val + 1; diff--; }
+        else if (val > 0) { el.value = val - 1; diff++; }
+        idx = idx === 1 ? 8 : idx - 1;
+      }
+      updateAll();
+    }
+
+    function newScenario() {
+      const cases = [
+        { sent: 8, reach: 90, threshold: '4', preset: 'B' },
+        { sent: 10, reach: 78, threshold: '4', preset: 'C' },
+        { sent: 12, reach: 92, threshold: '5', preset: 'A' },
+        { sent: 6, reach: 65, threshold: '3', preset: 'B' }
+      ];
+      const c = cases[Math.floor(Math.random() * cases.length)];
+      sentEl.value = c.sent;
+      reachEl.value = c.reach;
+      thresholdEl.value = c.threshold;
+      applyPreset(c.preset);
+      feedbackEl.className = 'feedback';
+      feedbackEl.innerHTML = '';
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+    document.getElementById('newCaseBtn').addEventListener('click', newScenario);
+    document.getElementById('presetA').addEventListener('click', () => applyPreset('A'));
+    document.getElementById('presetB').addEventListener('click', () => applyPreset('B'));
+    document.getElementById('presetC').addEventListener('click', () => applyPreset('C'));
+    sentEl.addEventListener('input', updateAll);
+    reachEl.addEventListener('input', updateAll);
+    thresholdEl.addEventListener('change', updateAll);
+
+    createDistributionRows();
+    updateAll();
+    setScoreDisplay();
+  </script>
+</body>
+</html>
