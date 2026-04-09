@@ -182,7 +182,6 @@
 <body>
   <div class="wrap">
     <div class="hero">
-      <div class="pill" style="background:rgba(255,255,255,0.16); color:#fff;">MBA-Level Decision Lab</div>
       <h1>Message Frequency & Awareness Strategy Lab</h1>
       <p>
         Build and critique a media plan by distinguishing <strong>messages sent</strong> from <strong>message frequency actually received</strong>. The exercise uses the logic from the slides on message frequency, awareness, and the idea that nearly all campaigns send more messages than the target audience receives.
@@ -284,23 +283,7 @@
           <div class="insight" id="insightBox"></div>
         </div>
 
-        <div class="card">
-          <div class="pill">MBA Interpretation</div>
-          <h3>How to reason about the output</h3>
-          <ul style="margin:0 0 0 18px; line-height:1.7; color:#334155;">
-            <li>High <strong>messages sent</strong> do not prove high <strong>frequency received</strong>.</li>
-            <li>Awareness often depends on a meaningful share of the audience crossing an effective-frequency threshold.</li>
-            <li>A manager may need to trade off <strong>reach</strong> against <strong>frequency</strong>, not simply maximize gross impressions.</li>
-            <li>The best next action depends on whether the problem is <strong>distribution</strong>, <strong>creative quality</strong>, or <strong>insufficient weight</strong>.</li>
-          </ul>
-        </div>
 
-        <div class="card scorebox">
-          <div class="pill">Instructor View</div>
-          <h3 style="margin-bottom:8px;">Performance</h3>
-          <div class="score" id="score">0 / 3</div>
-          <div class="mini">1 point for a valid distribution, 1 point for choosing the best strategic response, 1 point for keeping the diagnosis logically consistent.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -319,8 +302,6 @@
     const questionTextEl = document.getElementById('questionText');
     const choicesEl = document.getElementById('choices');
     const feedbackEl = document.getElementById('feedback');
-    const scoreEl = document.getElementById('score');
-
     let selectedChoice = null;
     let answerKey = null;
     let score = 0;
@@ -402,9 +383,7 @@
       `;
     }
 
-    function setScoreDisplay() {
-      scoreEl.textContent = `${score} / 3`;
-    }
+    function setScoreDisplay() {}
 
     function generateQuestion(avg, thresholdShare, unreached, sent, valid) {
       const threshold = Number(thresholdEl.value);
@@ -592,7 +571,6 @@
 
     createDistributionRows();
     updateAll();
-    setScoreDisplay();
   </script>
 </body>
 </html>
