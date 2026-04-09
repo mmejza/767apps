@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Communication Strategy Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <main class="shell">
+        <header class="hero reveal">
+            <h1>Brand Communication Strategy Studio</h1>
+            <p class="subtitle">Map communication goals to customer psychology and performance metrics.</p>
+        </header>
+
+        <section class="panel reveal">
+            <h2>Strategic Matrix from the Slide</h2>
+            <div class="matrix-grid">
+                <div class="cell header blank"></div>
+                <div class="cell header">Brand Building</div>
+                <div class="cell header">Brand Information</div>
+                <div class="cell header">Brand Action</div>
+
+                <div class="cell row-head">Objective</div>
+                <div class="cell">Build brand</div>
+                <div class="cell">Build differentiation</div>
+                <div class="cell">Engage buyer, motivate purchase</div>
+
+                <div class="cell row-head">Customer Response</div>
+                <div class="cell">Affective (emotional tie)</div>
+                <div class="cell">Cognitive (interest in product information)</div>
+                <div class="cell">Behavioral (urgency, action)</div>
+
+                <div class="cell row-head">Performance Metric</div>
+                <div class="cell">Ad recall, brand recall, positive attitude</div>
+                <div class="cell">Content recall, positive attitude</div>
+                <div class="cell">Website visits, inquiries, purchase rate</div>
+            </div>
+        </section>
+
+        <section class="panel reveal">
+            <h2>Case Sprint: Choose the Right Communication Route</h2>
+            <p class="instruction">For each case, choose the best strategic route. Immediate feedback explains the logic.</p>
+            <div class="case-controls">
+                <div class="control-group">
+                    <label for="difficultyFilter" class="label">Difficulty</label>
+                    <select id="difficultyFilter">
+                        <option value="all">All levels</option>
+                        <option value="foundational">Foundational</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="executive">Executive</option>
+                    </select>
+                </div>
+                <div class="control-actions">
+                    <button id="shuffleModeBtn" class="ghost-btn" type="button" aria-pressed="false">Shuffle Mode: Off</button>
+                    <button id="resetCasesBtn" class="ghost-btn" type="button">Reset Cases</button>
+                </div>
+            </div>
+            <p id="caseMeta" class="case-meta"></p>
+            <div id="cases" class="cases"></div>
+            <div class="score-row">
+                <p>Score: <span id="score">0</span> / <span id="totalCases">0</span></p>
+            </div>
+        </section>
+
+        <section class="panel reveal">
+            <h2>KPI Design Lab</h2>
+            <p class="instruction">Build a coherent campaign design by aligning objective, customer response, and primary KPI.</p>
+
+            <div class="lab-grid">
+                <div>
+                    <label for="goalSelect" class="label">Primary campaign objective</label>
+                    <select id="goalSelect">
+                        <option value="awareness">Increase awareness in a crowded category</option>
+                        <option value="differentiate">Clarify why our offer is superior</option>
+                        <option value="convert">Drive immediate trial and purchase</option>
+                    </select>
+                </div>
+
+                <div>
+                    <p class="label">Target customer response</p>
+                    <div class="chips" id="responseChips">
+                        <button class="chip" data-response="affective">Affective</button>
+                        <button class="chip" data-response="cognitive">Cognitive</button>
+                        <button class="chip" data-response="behavioral">Behavioral</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="metricSelect" class="label">Primary KPI</label>
+                    <select id="metricSelect">
+                        <option value="adRecall">Ad recall</option>
+                        <option value="brandRecall">Brand recall</option>
+                        <option value="positiveAttitude">Positive attitude</option>
+                        <option value="contentRecall">Content recall</option>
+                        <option value="websiteVisits">Website visits</option>
+                        <option value="inquiries">Inquiries</option>
+                        <option value="purchaseRate">Purchase rate</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="evaluateBtn" class="primary-btn">Evaluate Strategic Fit</button>
+            <div id="labFeedback" class="lab-feedback" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
