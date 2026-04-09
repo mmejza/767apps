@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIDA Hierarchy – Consumer Response Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+
+  <main class="shell">
+
+    <!-- HERO -->
+    <header class="hero reveal">
+      <h1>AIDA Hierarchy<br><span class="accent-text">Consumer Response Lab</span></h1>
+      <p class="subtitle">Sales are the ultimate but not immediate consumer response to marketing communication actions. Master the five stages — and the leakage between them.</p>
+    </header>
+
+    <!-- REFERENCE MODEL -->
+    <section class="panel reveal" id="model-section">
+      <h2>The Communication Response Model</h2>
+      <div class="model-flow">
+        <div class="flow-node node-msg">
+          <span class="node-label">Communication<br>Message</span>
+          <span class="node-sub">Campaign Input</span>
+        </div>
+        <div class="flow-arrows">
+          <div class="arrow-set">
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+          </div>
+        </div>
+        <div class="flow-middle">
+          <div class="flow-node node-mid" data-stage="exposed">Exposed to message</div>
+          <div class="flow-node node-mid" data-stage="recalled">Recalled message</div>
+          <div class="flow-node node-mid" data-stage="visited">Visited web site</div>
+          <div class="flow-node node-mid" data-stage="attitude">Attitude toward brand</div>
+        </div>
+        <div class="flow-arrows">
+          <div class="arrow-set arrow-set-right">
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+            <div class="arrow-line"></div>
+          </div>
+        </div>
+        <div class="flow-node node-trial">
+          <span class="node-label">Initial<br>Trial</span>
+          <span class="node-sub">Purchase</span>
+        </div>
+      </div>
+      <p class="model-note">Each intermediate stage is a distinct consumer response that can be independently measured. <strong>Not all paths lead to trial.</strong></p>
+    </section>
+
+    <!-- TABS: two activity modes -->
+    <section class="panel reveal" id="activity-section">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="classify">Stage Classifier</button>
+        <button class="tab-btn" data-tab="diagnose">Campaign Diagnostics</button>
+        <button class="tab-btn" data-tab="funnel">Funnel Analyst</button>
+      </div>
+
+      <!-- TAB 1: Stage Classifier -->
+      <div class="tab-panel active" id="tab-classify">
+        <p class="instruction">Read the marketing scenario and classify which AIDA stage it primarily represents.</p>
+        <div class="controls-row">
+          <div class="control-group">
+            <label for="classifyFilter" class="label">Filter by stage</label>
+            <select id="classifyFilter">
+              <option value="all">All stages</option>
+              <option value="exposed">Exposed to message</option>
+              <option value="recalled">Recalled message</option>
+              <option value="visited">Visited web site</option>
+              <option value="attitude">Attitude toward brand</option>
+              <option value="trial">Initial trial</option>
+            </select>
+          </div>
+          <div class="control-actions">
+            <button id="shuffleClassifyBtn" class="ghost-btn" aria-pressed="false">Shuffle: Off</button>
+            <button id="resetClassifyBtn" class="ghost-btn">Reset</button>
+          </div>
+        </div>
+        <p id="classifyMeta" class="case-meta"></p>
+        <div id="classifyCards" class="cases"></div>
+        <div class="score-row">
+          Score: <span id="classifyScore">0</span> / <span id="classifyTotal">0</span>
+        </div>
+      </div>
+
+      <!-- TAB 2: Campaign Diagnostics -->
+      <div class="tab-panel" id="tab-diagnose">
+        <p class="instruction">A campaign result is described. Diagnose <em>which stage is failing</em> and identify the managerial implication.</p>
+        <div class="controls-row">
+          <button id="shuffleDiagBtn" class="ghost-btn" aria-pressed="false">Shuffle: Off</button>
+          <button id="resetDiagBtn" class="ghost-btn">Reset</button>
+        </div>
+        <p id="diagMeta" class="case-meta"></p>
+        <div id="diagCards" class="cases"></div>
+        <div class="score-row">
+          Score: <span id="diagScore">0</span> / <span id="diagTotal">0</span>
+        </div>
+      </div>
+
+      <!-- TAB 3: Funnel Analyst -->
+      <div class="tab-panel" id="tab-funnel">
+        <p class="instruction">You are given a funnel dataset. Answer the strategic question about where the biggest opportunity or problem lies.</p>
+        <div class="controls-row">
+          <button id="shuffleFunnelBtn" class="ghost-btn" aria-pressed="false">Shuffle: Off</button>
+          <button id="resetFunnelBtn" class="ghost-btn">Reset</button>
+        </div>
+        <p id="funnelMeta" class="case-meta"></p>
+        <div id="funnelCards" class="cases"></div>
+        <div class="score-row">
+          Score: <span id="funnelScore">0</span> / <span id="funnelTotal">0</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
